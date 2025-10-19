@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Matrix Chain Multiplication - Code & Output</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="heading">
+  <h2>Matrix Chain Multiplication Implementation</h2>
+</div>
+
+<div class="code-container">
+  <div class="language-label">C</div>
+  <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+  <pre><code>
+#include &lt;stdio.h&gt;
+#include &lt;limits.h&gt;
+
+int matrixChain(int p[], int n) {
+    int m[n][n];
+    for(int i=1;i&lt;n;i++) m[i][i]=0;
+    for(int L=2;L&lt;n;L++) {
+        for(int i=1;i&lt;n-L+1;i++) {
+            int j=i+L-1;
+            m[i][j]=INT_MAX;
+            for(int k=i;k&lt;j;k++) {
+                int q=m[i][k]+m[k+1][j]+p[i-1]*p[k]*p[j];
+                if(q&lt;m[i][j]) m[i][j]=q;
+            }
+        }
+    }
+    return m[1][n-1];
+}
+
+int main() {
+    int n;
+    scanf("%d",&n);
+    int arr[n];
+    for(int i=0;i&lt;n;i++) scanf("%d",&arr[i]);
+    printf("Minimum number of multiplications is %d\\n", matrixChain(arr,n));
+    return 0;
+}
+  </code></pre>
+</div>
+
+
+
+
+
+<!-- -------------------- -->
+<div class="head"> 
+  <p>
+   "Enter your details to display them in the output."
+  </p>
+</div>
+
+
+<!-- Student Form -->
+<div class="container">
+    <div class="student-form">
+        
+        <form id="studentForm" class="form-horizontal">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" placeholder="Enter Name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="roll">Roll No:</label>
+                <input type="text" id="roll" placeholder="Enter Roll No" required>
+            </div>
+
+            <div class="form-group">
+                <label for="section">Section:</label>
+                <input type="text" id="section" placeholder="Enter Section" required>
+            </div>
+
+            <button type="submit" class="submit-btn">Submit</button>
+        </form>
+    </div>
+</div>
+
+
+<!-- Output Container -->
+<div class="output-container">
+  <div class="output-label">Output</div>
+  <button class="copy-btn" onclick="copyOutput(this)">Copy</button>
+  <pre id="output-text"></pre>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const studentForm = document.getElementById('studentForm');
+    const outputText = document.getElementById('output-text');
+
+    // Default C program simulation output
+    const defaultCOutput = `Input:
+4
+10 20 30 40
+Output:
+Minimum number of multiplications is 18000`;
+
+    // Load existing student (only one) from localStorage
+    let student = JSON.parse(localStorage.getItem('student') || 'null');
+
+    function displayOutput() {
+        let text = '';
+        if (student) {
+            text += `Name   : ${student.name}\nRoll No: ${student.roll}\nSection: ${student.section}\n\n`;
+        }
+        text += defaultCOutput;
+        outputText.textContent = text;
+    }
+
+    // Display output on page load
+    displayOutput();
+
+    // Handle form submission
+    studentForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const name = document.getElementById('name').value.trim();
+        const roll = document.getElementById('roll').value.trim();
+        const section = document.getElementById('section').value.trim();
+
+        if (!name || !roll || !section) {
+            alert('Please fill all fields.');
+            return;
+        }
+
+        // Replace previous student with new one
+        student = { name, roll, section };
+        localStorage.setItem('student', JSON.stringify(student));
+
+        // Clear form
+        studentForm.reset();
+
+        // Update output
+        displayOutput();
+    });
+});
+
+// Copy buttons functionality
+function copyCode(button) {
+    const code = button.nextElementSibling.innerText.trim();
+    navigator.clipboard.writeText(code).then(() => {
+        button.textContent = '✔ Copied';
+        setTimeout(() => { button.textContent = 'Copy'; }, 2000);
+    });
+}
+
+function copyOutput(button) {
+    const output = document.getElementById('output-text').textContent.trim();
+    navigator.clipboard.writeText(output).then(() => {
+        button.textContent = '✔ Copied';
+        setTimeout(() => { button.textContent = 'Copy'; }, 2000);
+    });
+}
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+

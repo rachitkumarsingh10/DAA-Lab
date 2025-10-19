@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Naive String Matching - Code & Output</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="heading">
+  <h2>Naive String Matching Implementation</h2>
+</div>
+
+<div class="code-container">
+  <div class="language-label">C</div>
+  <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+  <pre><code>
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+void naiveSearch(char txt[], char pat[]) {
+    int n=strlen(txt), m=strlen(pat);
+    for(int i=0;i&lt;n-m+1;i++){
+        int j;
+        for(j=0;j&lt;m;j++) if(txt[i+j]!=pat[j]) break;
+        if(j==m) printf("Pattern found at index %d\\n",i);
+    }
+}
+
+int main(){
+    char txt[100], pat[100];
+    scanf("%s %s", txt, pat);
+    naiveSearch(txt, pat);
+    return 0;
+}
+  </code></pre>
+</div>
+
+
+
+
+
+<!-- -------------------- -->
+<div class="head"> 
+  <p>
+   "Enter your details to display them in the output."
+  </p>
+</div>
+
+
+<!-- Student Form -->
+<div class="container">
+    <div class="student-form">
+        
+        <form id="studentForm" class="form-horizontal">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" placeholder="Enter Name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="roll">Roll No:</label>
+                <input type="text" id="roll" placeholder="Enter Roll No" required>
+            </div>
+
+            <div class="form-group">
+                <label for="section">Section:</label>
+                <input type="text" id="section" placeholder="Enter Section" required>
+            </div>
+
+            <button type="submit" class="submit-btn">Submit</button>
+        </form>
+    </div>
+</div>
+
+
+<!-- Output Container -->
+<div class="output-container">
+  <div class="output-label">Output</div>
+  <button class="copy-btn" onclick="copyOutput(this)">Copy</button>
+  <pre id="output-text"></pre>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const studentForm = document.getElementById('studentForm');
+    const outputText = document.getElementById('output-text');
+
+    // Default C program simulation output
+    const defaultCOutput = `Input:
+ABABDABACDABABCABAB ABABCABAB
+Output:
+Pattern found at index 10`;
+
+    // Load existing student (only one) from localStorage
+    let student = JSON.parse(localStorage.getItem('student') || 'null');
+
+    function displayOutput() {
+        let text = '';
+        if (student) {
+            text += `Name   : ${student.name}\nRoll No: ${student.roll}\nSection: ${student.section}\n\n`;
+        }
+        text += defaultCOutput;
+        outputText.textContent = text;
+    }
+
+    // Display output on page load
+    displayOutput();
+
+    // Handle form submission
+    studentForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const name = document.getElementById('name').value.trim();
+        const roll = document.getElementById('roll').value.trim();
+        const section = document.getElementById('section').value.trim();
+
+        if (!name || !roll || !section) {
+            alert('Please fill all fields.');
+            return;
+        }
+
+        // Replace previous student with new one
+        student = { name, roll, section };
+        localStorage.setItem('student', JSON.stringify(student));
+
+        // Clear form
+        studentForm.reset();
+
+        // Update output
+        displayOutput();
+    });
+});
+
+// Copy buttons functionality
+function copyCode(button) {
+    const code = button.nextElementSibling.innerText.trim();
+    navigator.clipboard.writeText(code).then(() => {
+        button.textContent = '✔ Copied';
+        setTimeout(() => { button.textContent = 'Copy'; }, 2000);
+    });
+}
+
+function copyOutput(button) {
+    const output = document.getElementById('output-text').textContent.trim();
+    navigator.clipboard.writeText(output).then(() => {
+        button.textContent = '✔ Copied';
+        setTimeout(() => { button.textContent = 'Copy'; }, 2000);
+    });
+}
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
